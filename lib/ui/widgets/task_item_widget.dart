@@ -6,6 +6,7 @@ import 'package:task_manager/ui/widgets/snack_bar_message.dart';
 
 import '../../data/services/network_caller.dart';
 import '../../data/utils/urls.dart';
+import '../screens/delete_confirmation_dialog.dart';
 import '../screens/main_bottom_nav_screen.dart';
 
 class TaskItemWidget extends StatelessWidget {
@@ -49,9 +50,12 @@ class TaskItemWidget extends StatelessWidget {
                   children: [
                     IconButton(
                       onPressed: () async{
-                        await _showDeleteConfirmationDialog(context);
-                        // Navigator.pushNamed(
-                        //     context, MainBottomNavScreen.name);
+                        bool isConfirmed = await ConfirmationDialog.showDeleteConfirmationDialog(context);
+                        if (isConfirmed) {
+                          _deleteTask(taskModel.sId!);
+                          Navigator.pushNamed(
+                              context, MainBottomNavScreen.name);
+                        }
                       },
                       icon: const Icon(Icons.delete),
                     ),
@@ -95,34 +99,6 @@ class TaskItemWidget extends StatelessWidget {
     // _getTaskCountByStatusInProgress = false;
     // setState(() {});
   }
-  Future<void> _showDeleteConfirmationDialog(BuildContext context) async{
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Confirm Deletion'),
-          content: Text('Are you sure you want to delete this item?'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                // // Close the dialog
-                Navigator.of(context).pop();
 
-              },
-              child: Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                _deleteTask(taskModel.sId!);
-                Navigator.pushNamed(
-                    context, MainBottomNavScreen.name);
-              },
-              child: Text('Delete'),
-            ),
-          ],
-        );
-      },
-    );
-  }
 
 }

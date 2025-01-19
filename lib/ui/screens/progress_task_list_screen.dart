@@ -41,7 +41,6 @@ class _ProgressTaskListScreenState extends State<ProgressTaskListScreen> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              _buildTasksSummaryByStatus(),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: Visibility(
@@ -53,12 +52,7 @@ class _ProgressTaskListScreenState extends State<ProgressTaskListScreen> {
           ),
         ),
       ),
-      floatingActionButton:  FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(context, AddNewTaskScreen.name);
-        },
-        child: const Icon(Icons.add),
-      ),
+
     );
   }
 
@@ -75,30 +69,7 @@ class _ProgressTaskListScreenState extends State<ProgressTaskListScreen> {
     );
   }
 
-  Widget _buildTasksSummaryByStatus() {
-    return Visibility(
-      visible: _getTaskCountByStatusInProgress == false,
-      replacement: const CenteredCircularProgressIndicator(),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: SizedBox(
-          height: 100,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: taskCountByStatusModel?.taskByStatusList?.length ?? 0,
-            itemBuilder: (context, index) {
-              final TaskCountModel model =
-              taskCountByStatusModel!.taskByStatusList![index];
-              return TaskStatusSummaryCounterWidget(
-                title: model.sId ?? '',
-                count: model.sum.toString(),
-              );
-            },
-          ),
-        ),
-      ),
-    );
-  }
+
 
 
 

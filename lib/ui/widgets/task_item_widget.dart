@@ -6,6 +6,7 @@ import 'package:task_manager/ui/widgets/snack_bar_message.dart';
 
 import '../../data/services/network_caller.dart';
 import '../../data/utils/urls.dart';
+import '../screens/main_bottom_nav_screen.dart';
 
 class TaskItemWidget extends StatelessWidget {
   const TaskItemWidget({
@@ -47,8 +48,10 @@ class TaskItemWidget extends StatelessWidget {
                 Row(
                   children: [
                     IconButton(
-                      onPressed: () {
-                        _deleteTask(taskModel.sId!);
+                      onPressed: () async{
+                        await _showDeleteConfirmationDialog(context);
+                        // Navigator.pushNamed(
+                        //     context, MainBottomNavScreen.name);
                       },
                       icon: const Icon(Icons.delete),
                     ),
@@ -85,13 +88,41 @@ class TaskItemWidget extends StatelessWidget {
     final NetworkResponse response =
     await NetworkCaller.getRequest(url: Urls.deleteTaskUrl(sid));
     if (response.isSuccess) {
-      // taskCountByStatusModel =
-      //     TaskCountByStatusModel.fromJson(response.responseData!);
+      showSnackBarMessage(TaskManagerApp.navigatorKey.currentContext!, "Task deleted successfully.");
     } else {
       showSnackBarMessage(TaskManagerApp.navigatorKey.currentContext!, response.errorMessage);
     }
     // _getTaskCountByStatusInProgress = false;
     // setState(() {});
+  }
+  Future<void> _showDeleteConfirmationDialog(BuildContext context) async{
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Confirm Deletion'),
+          content: Text('Are you sure you want to delete this item?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                // // Close the dialog
+                Navigator.of(context).pop();
+
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                _deleteTask(taskModel.sId!);
+                Navigator.pushNamed(
+                    context, MainBottomNavScreen.name);
+              },
+              child: Text('Delete'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
 }

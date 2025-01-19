@@ -52,12 +52,7 @@ class _CanceledTaskListScreenState extends State<CanceledTaskListScreen> {
           ),
         ),
       ),
-      floatingActionButton:  FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(context, AddNewTaskScreen.name);
-        },
-        child: const Icon(Icons.add),
-      ),
+
     );
   }
 

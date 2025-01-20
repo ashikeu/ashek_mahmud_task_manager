@@ -6,6 +6,8 @@ import 'package:task_manager/data/models/user_model.dart';
 class AuthController {
   static String? accessToken;
   static UserModel? userModel;
+  static String? userEmail;
+  static String? userOTP;
 
   static const String _accessTokenKey = 'access-token';
   static const String _userDataKey = 'user-data';

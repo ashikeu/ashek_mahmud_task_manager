@@ -70,9 +70,6 @@ class _ProgressTaskListScreenState extends State<ProgressTaskListScreen> {
   }
 
 
-
-
-
   Future<void> _getNewTaskList() async {
     _getNewTaskListInProgress = true;
     setState(() {});

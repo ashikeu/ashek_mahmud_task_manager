@@ -16,4 +16,12 @@ class Urls {
   static String updateTaskStatusUrl(String id,String status) =>
       '$_baseUrl/updateTaskStatus/$id/$status';
 
+  static String recoverVerifyEmailUrl(String email) =>
+      '$_baseUrl/RecoverVerifyEmail/$email';
+
+  static String recoverVerifyOTPUrl(String email,String otp) =>
+      '$_baseUrl/RecoverVerifyOTP/$email/$otp';
+      
+  static String recoverResetPassUrl='$_baseUrl/RecoverResetPass';
+
 }

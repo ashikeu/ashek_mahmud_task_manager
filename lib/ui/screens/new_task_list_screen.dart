@@ -16,6 +16,7 @@ import 'package:task_manager/ui/widgets/tm_app_bar.dart';
 
 class NewTaskListScreen extends StatefulWidget {
   const NewTaskListScreen({super.key});
+  
 
   @override
   State<NewTaskListScreen> createState() => _NewTaskListScreenState();
@@ -33,7 +34,7 @@ class _NewTaskListScreenState extends State<NewTaskListScreen> {
     _getTaskCountByStatus();
     _getNewTaskList();
   }
-
+   
   @override
   Widget build(BuildContext context) {
     return Scaffold(

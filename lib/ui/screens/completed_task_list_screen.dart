@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:task_manager/app.dart';
 import 'package:task_manager/data/models/task_count_by_status_model.dart';
-import 'package:task_manager/data/models/task_count_model.dart';
 import 'package:task_manager/data/models/task_list_by_status_model.dart';
 import 'package:task_manager/data/services/network_caller.dart';
 import 'package:task_manager/data/utils/urls.dart';
-import 'package:task_manager/ui/screens/add_new_task_screen.dart';
 import 'package:task_manager/ui/utils/status_enum.dart';
 import 'package:task_manager/ui/widgets/centered_circular_progress_indicator.dart';
 import 'package:task_manager/ui/widgets/screen_background.dart';
 import 'package:task_manager/ui/widgets/snack_bar_message.dart';
 import 'package:task_manager/ui/widgets/task_item_widget.dart';
-import 'package:task_manager/ui/widgets/task_status_summary_counter_widget.dart';
 import 'package:task_manager/ui/widgets/tm_app_bar.dart';
 
 class CompletedTaskListScreen extends StatefulWidget {
@@ -22,7 +19,6 @@ class CompletedTaskListScreen extends StatefulWidget {
 }
 
 class _CompletedTaskListScreenState extends State<CompletedTaskListScreen> {
-  bool _getTaskCountByStatusInProgress = false;
   bool _getNewTaskListInProgress = false;
   TaskCountByStatusModel? taskCountByStatusModel;
   TaskListByStatusModel? newTaskListModel;
@@ -69,21 +65,6 @@ class _CompletedTaskListScreenState extends State<CompletedTaskListScreen> {
     );
   }
 
-
-  Future<void> _getTaskCountByStatus() async {
-    _getTaskCountByStatusInProgress = true;
-    setState(() {});
-    final NetworkResponse response =
-    await NetworkCaller.getRequest(url: Urls.taskCountByStatusUrl);
-    if (response.isSuccess) {
-      taskCountByStatusModel =
-          TaskCountByStatusModel.fromJson(response.responseData!);
-    } else {
-      showSnackBarMessage(context, response.errorMessage);
-    }
-    _getTaskCountByStatusInProgress = false;
-    setState(() {});
-  }
 
   Future<void> _getNewTaskList() async {
     _getNewTaskListInProgress = true;

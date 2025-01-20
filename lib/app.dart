@@ -20,6 +20,7 @@ class TaskManagerApp extends StatelessWidget {
     return MaterialApp(
       initialRoute: '/',
       navigatorKey: navigatorKey,
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorSchemeSeed: AppColors.themeColor,
         textTheme: const TextTheme(
@@ -77,6 +78,7 @@ class TaskManagerApp extends StatelessWidget {
         } else if (settings.name == UpdateProfileScreen.name) {
           widget = const UpdateProfileScreen();
         }
+        
         return MaterialPageRoute(builder: (ctx) => widget);
       },
     );

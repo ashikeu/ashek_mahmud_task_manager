@@ -16,13 +16,11 @@ class MainBottomNavScreen extends StatefulWidget {
 
 class _MainBottomNavScreenState extends State<MainBottomNavScreen> {
   int _selectedIndex = 0;
-  final List<Widget> _screens =  [
+  final List<Widget> _screens = const [
     NewTaskListScreen(),
-    //ProgressTaskListScreen(),
-    CompletedTaskListScreen(status:enumTaskStatus.Progress),
-    CompletedTaskListScreen(status:enumTaskStatus.Completed),
-    CompletedTaskListScreen(status:enumTaskStatus.Canceled),
-    //CanceledTaskListScreen()
+    ProgressTaskListScreen(),
+    CompletedTaskListScreen(),
+    CanceledTaskListScreen()
   ];
 
   @override
@@ -41,7 +39,7 @@ class _MainBottomNavScreenState extends State<MainBottomNavScreen> {
           NavigationDestination(icon: const Icon(Icons.refresh), label: enumTaskStatus.Progress.name),
           NavigationDestination(icon: const Icon(Icons.done), label:enumTaskStatus.Completed.name),
           NavigationDestination(
-              icon: const Icon(Icons.cancel_outlined), label: enumTaskStatus.Canceled.name),
+              icon: Icon(Icons.cancel_outlined), label: enumTaskStatus.Canceled.name),
         ],
       ),
     );

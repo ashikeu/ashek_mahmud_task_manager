@@ -54,7 +54,7 @@ class TaskItemWidget extends StatelessWidget {
                         bool isConfirmed = await ConfirmationDialog.showDeleteConfirmationDialog(context);
                         if (isConfirmed) {
                           _deleteTask(taskModel.sId!);
-                          Navigator.pushNamed(
+                          Navigator.pushReplacementNamed(
                               context, MainBottomNavScreen.name);
                         }
                       },
@@ -65,7 +65,7 @@ class TaskItemWidget extends StatelessWidget {
                          enumTaskStatus taskStatus = await ChangeStatusDialog.showChangeStatusDialog(context);
                         if (taskStatus.name!=taskModel.status) {
                             _updateTask(taskStatus.name,taskModel.sId!);
-                          Navigator.pushNamed(
+                          Navigator.pushReplacementNamed(
                               context, MainBottomNavScreen.name);
                         }
                       },

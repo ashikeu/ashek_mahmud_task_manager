@@ -50,6 +50,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       if (value?.trim().isEmpty ?? true) {
                         return 'Enter your email';
                       }
+                      if (!_isValidEmail(value!)) {
+                        return 'Invalid Email';
+                      }
                       return null;
                     },
                   ),
@@ -123,7 +126,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
       ),
     );
   }
-
+  bool _isValidEmail(String email) {
+    // Regular expression for validating email
+    String pattern =
+        r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$';
+    RegExp regex = RegExp(pattern);
+    return regex.hasMatch(email);
+  }
   void _onTapSignUpButton() {
     if (_formKey.currentState!.validate()) {
       _registerUser();

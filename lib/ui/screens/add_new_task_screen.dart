@@ -7,6 +7,8 @@ import 'package:task_manager/ui/widgets/screen_background.dart';
 import 'package:task_manager/ui/widgets/snack_bar_message.dart';
 import 'package:task_manager/ui/widgets/tm_app_bar.dart';
 
+import 'main_bottom_nav_screen.dart';
+
 class AddNewTaskScreen extends StatefulWidget {
   const AddNewTaskScreen({super.key});
 
@@ -102,6 +104,8 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
     setState(() {});
     if (response.isSuccess) {
       _clearTextFields();
+      Navigator.pushReplacementNamed(
+          context, MainBottomNavScreen.name);
       showSnackBarMessage(context, 'New task added!');
     } else {
       showSnackBarMessage(context, response.errorMessage);

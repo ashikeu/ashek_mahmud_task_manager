@@ -14,6 +14,7 @@ import 'package:task_manager/ui/widgets/tm_app_bar.dart';
 class CanceledTaskListScreen extends StatefulWidget {
   const CanceledTaskListScreen({super.key});
 
+
   @override
   State<CanceledTaskListScreen> createState() => _CanceledTaskListScreenState();
 }
@@ -22,6 +23,7 @@ class _CanceledTaskListScreenState extends State<CanceledTaskListScreen> {
   bool _getNewTaskListInProgress = false;
   TaskCountByStatusModel? taskCountByStatusModel;
   TaskListByStatusModel? newTaskListModel;
+  
 
   @override
   void initState() {

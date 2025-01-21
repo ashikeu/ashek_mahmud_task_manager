@@ -47,7 +47,7 @@ class _NewTaskListScreenState extends State<NewTaskListScreen> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: Visibility(
-                    visible: _getNewTaskListInProgress == false,
+                    visible: (_getNewTaskListInProgress == false && _getTaskCountByStatusInProgress==false),
                     replacement: const CenteredCircularProgressIndicator(),
                     child: _buildTaskListView()),
               ),
@@ -78,25 +78,21 @@ class _NewTaskListScreenState extends State<NewTaskListScreen> {
   }
 
   Widget _buildTasksSummaryByStatus() {
-    return Visibility(
-      visible: _getTaskCountByStatusInProgress == false,
-      replacement: const CenteredCircularProgressIndicator(),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: SizedBox(
-          height: 100,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: taskCountByStatusModel?.taskByStatusList?.length ?? 0,
-            itemBuilder: (context, index) {
-              final TaskCountModel model =
-                  taskCountByStatusModel!.taskByStatusList![index];
-              return TaskStatusSummaryCounterWidget(
-                title: model.sId ?? '',
-                count: model.sum.toString(),
-              );
-            },
-          ),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: SizedBox(
+        height: 100,
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: taskCountByStatusModel?.taskByStatusList?.length ?? 0,
+          itemBuilder: (context, index) {
+            final TaskCountModel model =
+                taskCountByStatusModel!.taskByStatusList![index];
+            return TaskStatusSummaryCounterWidget(
+              title: model.sId ?? '',
+              count: model.sum.toString(),
+            );
+          },
         ),
       ),
     );

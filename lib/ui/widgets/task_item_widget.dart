@@ -38,7 +38,8 @@ class TaskItemWidget extends StatelessWidget {
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
-                    color: _getStatusColor(taskModel.status ?? enumTaskStatus.NewTask.name),
+                    color: _getStatusColor(
+                        taskModel.status ?? enumTaskStatus.NewTask.name),
                   ),
                   child: Text(
                     taskModel.status ?? enumTaskStatus.NewTask.name,
@@ -50,8 +51,9 @@ class TaskItemWidget extends StatelessWidget {
                 Row(
                   children: [
                     IconButton(
-                      onPressed: () async{
-                        bool isConfirmed = await ConfirmationDialog.showDeleteConfirmationDialog(context);
+                      onPressed: () async {
+                        bool isConfirmed = await ConfirmationDialog
+                            .showDeleteConfirmationDialog(context);
                         if (isConfirmed) {
                           _deleteTask(taskModel.sId!);
                           Navigator.pushReplacementNamed(
@@ -61,10 +63,12 @@ class TaskItemWidget extends StatelessWidget {
                       icon: const Icon(Icons.delete),
                     ),
                     IconButton(
-                      onPressed: () async{
-                         enumTaskStatus taskStatus = await ChangeStatusDialog.showChangeStatusDialog(context);
-                        if (taskStatus.name!=taskModel.status) {
-                            _updateTask(taskStatus.name,taskModel.sId!);
+                      onPressed: () async {
+                        enumTaskStatus taskStatus =
+                            await ChangeStatusDialog.showChangeStatusDialog(
+                                context);
+                        if (taskStatus.name != taskModel.status) {
+                          _updateTask(taskStatus.name, taskModel.sId!);
                           Navigator.pushReplacementNamed(
                               context, MainBottomNavScreen.name);
                         }
@@ -79,8 +83,6 @@ class TaskItemWidget extends StatelessWidget {
         ),
       ),
     );
-
-
   }
 
   Color _getStatusColor(String status) {
@@ -94,32 +96,36 @@ class TaskItemWidget extends StatelessWidget {
       return Colors.green;
     }
   }
+
   Future<void> _deleteTask(String sid) async {
     // _getTaskCountByStatusInProgress = true;
     // setState(() {});
     final NetworkResponse response =
-    await NetworkCaller.getRequest(url: Urls.deleteTaskUrl(sid));
+        await NetworkCaller.getRequest(url: Urls.deleteTaskUrl(sid));
     if (response.isSuccess) {
-      showSnackBarMessage(TaskManagerApp.navigatorKey.currentContext!, "Task deleted successfully.");
+      showSnackBarMessage(TaskManagerApp.navigatorKey.currentContext!,
+          "Task deleted successfully.");
     } else {
-      showSnackBarMessage(TaskManagerApp.navigatorKey.currentContext!, response.errorMessage);
+      showSnackBarMessage(
+          TaskManagerApp.navigatorKey.currentContext!, response.errorMessage);
     }
     // _getTaskCountByStatusInProgress = false;
     // setState(() {});
   }
-  Future<void> _updateTask(String status,String sid) async {
+
+  Future<void> _updateTask(String status, String sid) async {
     // _getTaskCountByStatusInProgress = true;
     // setState(() {});
-    final NetworkResponse response =
-    await NetworkCaller.getRequest(url: Urls.updateTaskStatusUrl(sid,status));
+    final NetworkResponse response = await NetworkCaller.getRequest(
+        url: Urls.updateTaskStatusUrl(sid, status));
     if (response.isSuccess) {
-      showSnackBarMessage(TaskManagerApp.navigatorKey.currentContext!, "Task status updated successfully.");
+      showSnackBarMessage(TaskManagerApp.navigatorKey.currentContext!,
+          "Task status updated successfully.");
     } else {
-      showSnackBarMessage(TaskManagerApp.navigatorKey.currentContext!, response.errorMessage);
+      showSnackBarMessage(
+          TaskManagerApp.navigatorKey.currentContext!, response.errorMessage);
     }
     // _getTaskCountByStatusInProgress = false;
     // setState(() {});
   }
-
-
 }

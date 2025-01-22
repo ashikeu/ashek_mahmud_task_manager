@@ -16,7 +16,6 @@ import 'package:task_manager/ui/widgets/tm_app_bar.dart';
 
 class NewTaskListScreen extends StatefulWidget {
   const NewTaskListScreen({super.key});
-  
 
   @override
   State<NewTaskListScreen> createState() => _NewTaskListScreenState();
@@ -34,7 +33,7 @@ class _NewTaskListScreenState extends State<NewTaskListScreen> {
     _getTaskCountByStatus();
     _getNewTaskList();
   }
-   
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,11 +42,12 @@ class _NewTaskListScreenState extends State<NewTaskListScreen> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-                _buildTasksSummaryByStatus(),
+              _buildTasksSummaryByStatus(),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: Visibility(
-                    visible: (_getNewTaskListInProgress == false && _getTaskCountByStatusInProgress==false),
+                    visible: (_getNewTaskListInProgress == false &&
+                        _getTaskCountByStatusInProgress == false),
                     replacement: const CenteredCircularProgressIndicator(),
                     child: _buildTaskListView()),
               ),
@@ -55,8 +55,8 @@ class _NewTaskListScreenState extends State<NewTaskListScreen> {
           ),
         ),
       ),
-       floatingActionButton:  FloatingActionButton(
-        onPressed: () {
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
           Navigator.pushNamed(context, AddNewTaskScreen.name);
         },
         child: const Icon(Icons.add),
@@ -64,7 +64,7 @@ class _NewTaskListScreenState extends State<NewTaskListScreen> {
     );
   }
 
-  Widget _buildTaskListView() {    
+  Widget _buildTaskListView() {
     return ListView.builder(
       shrinkWrap: true,
       primary: false,
@@ -116,11 +116,13 @@ class _NewTaskListScreenState extends State<NewTaskListScreen> {
   Future<void> _getNewTaskList() async {
     _getNewTaskListInProgress = true;
     setState(() {});
-    final NetworkResponse response =await NetworkCaller.getRequest(url: Urls.taskListByStatusUrl(enumTaskStatus.NewTask.name));
+    final NetworkResponse response = await NetworkCaller.getRequest(
+        url: Urls.taskListByStatusUrl(enumTaskStatus.NewTask.name));
     if (response.isSuccess) {
       newTaskListModel = TaskListByStatusModel.fromJson(response.responseData!);
     } else {
-      showSnackBarMessage(TaskManagerApp.navigatorKey.currentContext!, response.errorMessage);
+      showSnackBarMessage(
+          TaskManagerApp.navigatorKey.currentContext!, response.errorMessage);
     }
     _getNewTaskListInProgress = false;
     setState(() {});

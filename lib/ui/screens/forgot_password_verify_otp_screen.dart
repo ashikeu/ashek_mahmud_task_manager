@@ -26,7 +26,7 @@ class _ForgotPasswordVerifyOtpScreenState
     extends State<ForgotPasswordVerifyOtpScreen> {
   final TextEditingController _otpTEController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  bool _verifyOTPStatus = false;  
+  bool _verifyOTPStatus = false;
   //FocusNode focusNode = FocusNode();
 
   @override
@@ -54,15 +54,15 @@ class _ForgotPasswordVerifyOtpScreenState
                   _buildPinCodeTextField(),
                   const SizedBox(height: 24),
                   Visibility(
-                     visible: _verifyOTPStatus == false,
+                    visible: _verifyOTPStatus == false,
                     replacement: const CenteredCircularProgressIndicator(),
                     child: ElevatedButton(
-                      onPressed: () async{
-                        AuthController.userOTP=_otpTEController.text;
-                         if(await _verifyOTP())
-                        {                        
-                        Navigator.pushNamed(
-                            TaskManagerApp.navigatorKey.currentContext!, ResetPasswordScreen.name);
+                      onPressed: () async {
+                        AuthController.userOTP = _otpTEController.text;
+                        if (await _verifyOTP()) {
+                          Navigator.pushNamed(
+                              TaskManagerApp.navigatorKey.currentContext!,
+                              ResetPasswordScreen.name);
                         }
                       },
                       child: const Icon(Icons.arrow_circle_right_outlined),
@@ -89,7 +89,7 @@ class _ForgotPasswordVerifyOtpScreenState
       keyboardType: TextInputType.number,
       pinTheme: PinTheme(
         shape: PinCodeFieldShape.box,
-        borderRadius: BorderRadius.circular(5),       
+        borderRadius: BorderRadius.circular(5),
         fieldHeight: 50,
         fieldWidth: 50,
         activeFillColor: Colors.white,
@@ -103,7 +103,6 @@ class _ForgotPasswordVerifyOtpScreenState
       appContext: context,
       // focusNode:focusNode
     );
-    
   }
 
   Widget _buildSignInSection() {
@@ -134,18 +133,26 @@ class _ForgotPasswordVerifyOtpScreenState
     _otpTEController.dispose();
     super.dispose();
   }
-  Future<bool> _verifyOTP() async {
-    bool _isSuccess=false;
-    _verifyOTPStatus = true;   
-    setState(() {});
-    final NetworkResponse response =await NetworkCaller.getRequest(url: Urls.recoverVerifyOTPUrl(AuthController.userEmail!,_otpTEController.text.trim()));
-    
-    if (response.isSuccess) {
-      showSnackBarMessage(TaskManagerApp.navigatorKey.currentContext!, 'OTP verified');
-      _isSuccess= true;
-    } else {
-      showSnackBarMessage(TaskManagerApp.navigatorKey.currentContext!, response.errorMessage);
 
+  Future<bool> _verifyOTP() async {
+    bool _isSuccess = false;
+    _verifyOTPStatus = true;
+    setState(() {});
+    final NetworkResponse response = await NetworkCaller.getRequest(
+        url: Urls.recoverVerifyOTPUrl(
+            AuthController.userEmail!, _otpTEController.text.trim()));
+
+    if (response.isSuccess &&
+        response.status.toLowerCase().contains('success')) {
+      showSnackBarMessage(
+          TaskManagerApp.navigatorKey.currentContext!, 'OTP verified');
+      _isSuccess = true;
+    } else if (response.isSuccess) {
+      showSnackBarMessage(
+          TaskManagerApp.navigatorKey.currentContext!, 'Invalid OTP code');
+    } else {
+      showSnackBarMessage(TaskManagerApp.navigatorKey.currentContext!,
+          '$response.errorMessage : $response.responseData[' 'data' ']');
     }
     _verifyOTPStatus = false;
     setState(() {});

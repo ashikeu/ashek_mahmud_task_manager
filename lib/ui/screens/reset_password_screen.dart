@@ -61,21 +61,21 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   ),
                   const SizedBox(height: 24),
                   Visibility(
-                     visible: _progressStatus == false,
+                    visible: _progressStatus == false,
                     replacement: const CenteredCircularProgressIndicator(),
                     child: ElevatedButton(
-                      onPressed: () async{
-                        if(_validatePasswords())
-                        {
-                        if(await _resetPassword())
-                          {
-                          Navigator.pushNamedAndRemoveUntil(
-                              TaskManagerApp.navigatorKey.currentContext!, SignInScreen.name, (value) => false);
+                      onPressed: () async {
+                        if (_validatePasswords()) {
+                          if (await _resetPassword()) {
+                            Navigator.pushNamedAndRemoveUntil(
+                                TaskManagerApp.navigatorKey.currentContext!,
+                                SignInScreen.name,
+                                (value) => false);
                           }
-                        }
-                        else
-                        {
-                          showSnackBarMessage(TaskManagerApp.navigatorKey.currentContext!, 'Password didn''t match.');
+                        } else {
+                          showSnackBarMessage(
+                              TaskManagerApp.navigatorKey.currentContext!,
+                              'Password didn' 't match.');
                         }
                       },
                       child: const Text('Confirm'),
@@ -93,15 +93,16 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       ),
     );
   }
-bool _validatePasswords() {
-   
-      // If passwords do not match, set error message
-      if (_newPasswordTEController.text != _confirmPasswordTEController.text) {
-        return false;
-      } else {
-        return true;
-      }   
+
+  bool _validatePasswords() {
+    // If passwords do not match, set error message
+    if (_newPasswordTEController.text != _confirmPasswordTEController.text) {
+      return false;
+    } else {
+      return true;
+    }
   }
+
   Widget _buildSignInSection() {
     return RichText(
       text: TextSpan(
@@ -115,10 +116,9 @@ bool _validatePasswords() {
               color: AppColors.themeColor,
             ),
             recognizer: TapGestureRecognizer()
-              ..onTap = () async{               
+              ..onTap = () async {
                 Navigator.pushNamedAndRemoveUntil(
                     context, SignInScreen.name, (value) => false);
-                
               },
           )
         ],
@@ -127,7 +127,7 @@ bool _validatePasswords() {
   }
 
   Future<bool> _resetPassword() async {
-    bool _isSuccess=false;
+    bool _isSuccess = false;
     _progressStatus = true;
     setState(() {});
     Map<String, dynamic> requestBody = {
@@ -139,11 +139,14 @@ bool _validatePasswords() {
         url: Urls.recoverResetPassUrl, body: requestBody);
     _progressStatus = false;
     setState(() {});
-    if (response.isSuccess) {     
-      _isSuccess=true;
-      showSnackBarMessage(TaskManagerApp.navigatorKey.currentContext!, 'Password changed successfully.');
+    if (response.isSuccess &&
+        response.status.toLowerCase().contains('success')) {
+      _isSuccess = true;
+      showSnackBarMessage(TaskManagerApp.navigatorKey.currentContext!,
+          'Password changed successfully.');
     } else {
-      showSnackBarMessage(TaskManagerApp.navigatorKey.currentContext!, response.errorMessage);
+      showSnackBarMessage(
+          TaskManagerApp.navigatorKey.currentContext!, response.errorMessage);
     }
     return _isSuccess;
   }

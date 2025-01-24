@@ -12,7 +12,7 @@ import 'package:task_manager/ui/widgets/snack_bar_message.dart';
 
 class ForgotPasswordVerifyEmailScreen extends StatefulWidget {
   const ForgotPasswordVerifyEmailScreen({super.key});
-static String? emailAddress='';
+  static String? emailAddress = '';
   static const String name = '/forgot-password/verify-email';
 
   @override
@@ -29,7 +29,7 @@ class _ForgotPasswordVerifyEmailScreenState
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
- 
+
     return Scaffold(
       body: ScreenBackground(
         child: SingleChildScrollView(
@@ -55,16 +55,15 @@ class _ForgotPasswordVerifyEmailScreenState
                   ),
                   const SizedBox(height: 24),
                   Visibility(
-                     visible: _verifyEmailStatus == false,
+                    visible: _verifyEmailStatus == false,
                     replacement: const CenteredCircularProgressIndicator(),
                     child: ElevatedButton(
-                      onPressed: () async{
-                         AuthController.userEmail=_emailTEController.text;
-                        if(await _verifyEmail())
-                        {
-                         
-                        Navigator.pushNamed(
-                            TaskManagerApp.navigatorKey.currentContext!, ForgotPasswordVerifyOtpScreen.name);
+                      onPressed: () async {
+                        AuthController.userEmail = _emailTEController.text;
+                        if (await _verifyEmail()) {
+                          Navigator.pushNamed(
+                              TaskManagerApp.navigatorKey.currentContext!,
+                              ForgotPasswordVerifyOtpScreen.name);
                         }
                       },
                       child: const Icon(Icons.arrow_circle_right_outlined),
@@ -110,18 +109,22 @@ class _ForgotPasswordVerifyEmailScreenState
     _emailTEController.dispose();
     super.dispose();
   }
-  Future<bool> _verifyEmail() async {
-    bool _isSuccess=false;
-    _verifyEmailStatus = true;   
-    setState(() {});
-    final NetworkResponse response =await NetworkCaller.getRequest(url: Urls.recoverVerifyEmailUrl(AuthController.userEmail!));
-    
-    if (response.isSuccess) {
-      showSnackBarMessage(TaskManagerApp.navigatorKey.currentContext!, 'OTP is sent to your email, Please check.');
-      _isSuccess= true;
-    } else {
-      showSnackBarMessage(TaskManagerApp.navigatorKey.currentContext!, response.errorMessage);
 
+  Future<bool> _verifyEmail() async {
+    bool _isSuccess = false;
+    _verifyEmailStatus = true;
+    setState(() {});
+    final NetworkResponse response = await NetworkCaller.getRequest(
+        url: Urls.recoverVerifyEmailUrl(AuthController.userEmail!));
+
+    if (response.isSuccess &&
+        response.status.toLowerCase().contains('success')) {
+      showSnackBarMessage(TaskManagerApp.navigatorKey.currentContext!,
+          'OTP is sent to your email, Please check.');
+      _isSuccess = true;
+    } else {
+      showSnackBarMessage(
+          TaskManagerApp.navigatorKey.currentContext!, response.errorMessage);
     }
     _verifyEmailStatus = false;
     setState(() {});

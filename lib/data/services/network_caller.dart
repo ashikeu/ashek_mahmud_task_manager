@@ -11,12 +11,14 @@ class NetworkResponse {
   final Map<String, dynamic>? responseData;
   final bool isSuccess;
   final String errorMessage;
+  final String status;
 
   NetworkResponse({
     required this.isSuccess,
     required this.statusCode,
     this.responseData,
     this.errorMessage = 'Something went wrong!',
+    this.status = "fail",
   });
 }
 
@@ -34,7 +36,8 @@ class NetworkCaller {
         return NetworkResponse(
             isSuccess: true,
             statusCode: response.statusCode,
-            responseData: decodedResponse);
+            responseData: decodedResponse,
+            status: decodedResponse['status']);
       } else if (response.statusCode == 401) {
         await _logout();
         return NetworkResponse(
